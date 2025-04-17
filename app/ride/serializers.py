@@ -15,7 +15,7 @@ class RideSerializer(serializers.ModelSerializer):
 
 class RideEventSerializer(serializers.ModelSerializer):
     """Ride event object serializer"""
-    
+
     class Meta:
         model = RideEvent
         fields = "__all__"
