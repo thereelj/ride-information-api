@@ -1,5 +1,6 @@
 """Database models."""
 
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import (
     AbstractBaseUser,
@@ -47,3 +48,31 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = "email"
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name}"
+
+
+class Ride(models.Model):
+    """Ride object"""
+
+    RIDE_STATUS_CHOICES = [
+        ("en-route", "En-route"),
+        ("pickup", "Pick-up"),
+        ("dropoff", "Drop-off"),
+    ]
+
+    status = models.CharField(
+        max_length=255, choices=RIDE_STATUS_CHOICES, default="pickup"
+    )
+    id_rider = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="rider_user"
+    )
+    id_driver = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="driver_user"
+    )
+    pickup_latitude = models.FloatField(blank=True, null=True)
+    pickup_longitude = models.FloatField(blank=True, null=True)
+    dropoff_latitude = models.FloatField(blank=True, null=True)
+    dropoff_longitude = models.FloatField(blank=True, null=True)
+    pickup_time = models.DateTimeField(blank=True, null=True)
