@@ -76,3 +76,9 @@ class Ride(models.Model):
     dropoff_latitude = models.FloatField(blank=True, null=True)
     dropoff_longitude = models.FloatField(blank=True, null=True)
     pickup_time = models.DateTimeField(blank=True, null=True)
+
+
+class RideEvent(models.Model):
+    id_ride = models.ForeignKey(Ride, on_delete=models.CASCADE)
+    description = models.CharField(max_length=255, blank=True, null=True)
+    created_at = models.DateTimeField(blank=True, null=True)

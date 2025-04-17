@@ -3,7 +3,7 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 
-from core.models import Ride
+from core.models import Ride, RideEvent
 
 
 class ModelTest(TestCase):
@@ -64,3 +64,31 @@ class ModelTest(TestCase):
         self.assertEqual(ride.status, payload["status"])
         self.assertEqual(rider, payload["id_rider"])
         self.assertEqual(driver, payload["id_driver"])
+
+    def test_create_ride_event(self):
+        rider = get_user_model().objects.create_user("ridertest@email.com", "Test@1234")
+        driver = get_user_model().objects.create_user(
+            "driverrtest@email.com", "Test@1234"
+        )
+
+        ride_payload = {
+            "status": "en-route",
+            "id_rider": rider,
+            "id_driver": driver,
+            "pickup_latitude": 40.7128,
+            "pickup_longitude": -74.0060,
+            "dropoff_latitude": 14.5995,
+            "dropoff_longitude": 120.9842,
+            "pickup_time": "2025-04-17T14:30:00",
+        }
+        ride = Ride.objects.create(**ride_payload)
+
+        ride_event_payload = {
+            "id_ride": ride,
+            "description": "Sample description of a ride event",
+            "created_at": "2025-04-17T14:30:00",
+        }
+
+        ride_event = RideEvent.objects.create(**ride_event_payload)
+        self.assertEqual(ride_event.description, ride_event_payload["description"])
+        self.assertEqual(ride_event.id_ride, ride_event_payload["id_ride"])
