@@ -40,5 +40,17 @@ class UserAdmin(BaseUserAdmin):
 
 
 admin.site.register(models.User, UserAdmin)
-admin.site.register(models.Ride)
-admin.site.register(models.RideEvent)
+
+
+@admin.register(models.Ride)
+class RideAdmin(admin.ModelAdmin):
+    list_display = ["id_driver", "id_rider", "status", "pickup_time"]
+    list_filter = ["status", "pickup_time"]
+    search_fields = ["id_driver", "id_rider", "pickup_time"]
+    ordering = ["-pickup_time"]
+    date_hierarchy = "pickup_time"
+
+
+@admin.register(models.RideEvent)
+class RideEventAdmin(admin.ModelAdmin):
+    list_display = ["id_ride", "description"]
