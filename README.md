@@ -20,7 +20,7 @@ Python version requirements: Python 3.9.6
 
 Additional notes:
 - Added 'distance' field on response when having GPS position as input to capture the difference between the two points.
-
+- Swagger for API documentation http://localhost/api/docs/
 
 Bonus - SQL:
 
